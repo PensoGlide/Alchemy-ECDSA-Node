@@ -4,6 +4,22 @@ This project is an example of using a client and server to facilitate transfers 
 
 However, something that we would like to incoporate is Public Key Cryptography. By using Elliptic Curve Digital Signatures we can make it so the server only allows transfers that have been signed for by the person who owns the associated address.
 
+### Implementation
+The current project uses ECDSA, more specifically `secp256k1` signatures in order to send a transaction. For that purpose, you could either use your own key pair and simply provide a valid signature or you could create your own keypair and signatures with the provided scripts under the 'server' codebase, more specifically `./scripts`, where you can find the `createPairs.js` and `signMessages.js`.
+
+The signature the server is expecting is one that contains a message derived by the `keccak256` of `Send amount + Recipient Address`.
+
+
+If your opted to use our scripts:
+- `createPairs.js`
+
+This file exists in order to ease the creation of key pairs, once more, using the `secp256k1` curve of the ECDSA algorithm, that is stored under the `.keypairs.json`.
+
+- `signMessages.js`
+  
+In order to easily sign the messages, this script was created. This function expects your `publicKey`, `amount` and `recipient`, being these last two a number and an hexadecimal address, respectively. For the addresses, you can provide the "0x" common to hexadecimal notation or not. The script then searches for your keypair on the `.keypairs.json`, generates a message hash by computing the `keccak256` of `amount + recipient` and finally returns your signature in hexadecimal notation for you to provide in the frontend "Signature Hexadecimal".
+
+
 ### Video instructions
 For an overview of this project as well as getting started instructions, check out the following video:
 
